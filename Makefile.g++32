@@ -1,0 +1,36 @@
+# Makefile.g++32 --- Makefile for 32-bit GNU C++
+# Usage: make -f Makefile.g++32
+
+DOTOBJ = .o
+DOTEXE = .exe
+
+CXX = g++
+
+DEFS = -static -m32 -DJAPAN -ansi -std=c++11
+DEFS2 = 
+
+#OPTIONS = -O9 -Ofast -DNDEBUG $(DEFS) $(DEFS2) -Wall -pedantic
+OPTIONS = -O0 -D_DEBUG $(DEFS) $(DEFS2) -Wall -pedantic
+
+CXXFLAGS = 
+
+OBJS = \
+	redirector$(DOTOBJ) \
+	mzc2mini$(DOTOBJ) \
+
+HEADERS = \
+	stdafx.h \
+	mzc2mini.h \
+
+all: redirector$(DOTEXE)
+
+redirector$(DOTEXE): $(OBJS)
+	$(CXX) -o redirector$(DOTEXE) $(CXXFLAGS) $(OPTIONS) $(OBJS)
+
+redirector$(DOTOBJ): $(HEADERS) redirector.cpp
+	$(CXX) -c $(CXXFLAGS) $(OPTIONS) -o redirector$(DOTOBJ) redirector.cpp
+mzc2mini$(DOTOBJ): $(HEADERS) mzc2mini.cpp
+	$(CXX) -c $(CXXFLAGS) $(OPTIONS) -o mzc2mini$(DOTOBJ) mzc2mini.cpp
+
+clean:
+	rm -f *$(DOTOBJ)
