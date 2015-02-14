@@ -1,5 +1,30 @@
 #include "stdafx.h"
 
+static
+void rd_replace_string(
+    std::string& str, const std::string& from, const std::string& to)
+{
+    size_t i = 0;
+    for (;;)
+    {
+        i = str.find(from, i);
+        if (i == std::string::npos)
+            break;
+
+        str.replace(i, from.size(), to);
+        i += to.size();
+    }
+}
+
+std::string rd_convert_cmdline_param(const std::string& str) {
+    std::string result = str;
+    rd_replace_string(result, "\"", "\"\"");
+    if (result.find_first_of("\" \t\f\v") != std::string::npos) {
+        result = "\"" + str + "\"";
+    }
+    return result;
+}
+
 int main(int argc, char **argv)
 {
     using namespace std;
@@ -38,10 +63,10 @@ int main(int argc, char **argv)
     }
 
     tstring cmdline;
-    for (int i = 4; i < argc; ++i) {
-        cmdline += TEXT("\"");
-        cmdline += argv[i];
-        cmdline += TEXT("\" ");
+    cmdline += rd_convert_cmdline_param(argv[4]);
+    for (int i = 5; i < argc; ++i) {
+        cmdline += " ";
+        cmdline += rd_convert_cmdline_param(argv[i]);
     }
     fprintf(stderr, "CommandLine: %s\n", cmdline.data());
 

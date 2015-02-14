@@ -477,7 +477,7 @@ BOOL __cdecl MFile::WriteFormatW(LPCWSTR pszFormat, ...)
     va_list argList;
     WCHAR sz[1024];
     va_start(argList, pszFormat);
-    vswprintf(sz, 1024, pszFormat, argList);
+    vswprintf(sz, pszFormat, argList);
     BOOL b = WriteSzW(sz);
     va_end(argList);
     return b;

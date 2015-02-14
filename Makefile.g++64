@@ -1,0 +1,36 @@
+# Makefile.g++64 --- Makefile for 64-bit GNU C++
+# Usage: make -f Makefile.g++64
+
+DOTOBJ = .o
+DOTEXE = .exe
+
+CXX = g++
+
+DEFS = -static -m64 -DJAPAN -ansi -std=c++11
+DEFS2 = 
+
+OPTIONS = -O9 -Ofast -DNDEBUG $(DEFS) $(DEFS2) -Wall -pedantic
+#OPTIONS = -O0 -D_DEBUG $(DEFS) $(DEFS2) -Wall -pedantic
+
+CXXFLAGS = 
+
+OBJS = \
+	redirector64$(DOTOBJ) \
+	mzc2mini64$(DOTOBJ) \
+
+HEADERS = \
+	stdafx.h \
+	mzc2mini.h \
+
+all: redirector64$(DOTEXE)
+
+redirector64$(DOTEXE): $(OBJS)
+	$(CXX) -o redirector64$(DOTEXE) $(CXXFLAGS) $(OPTIONS) $(OBJS)
+
+redirector64$(DOTOBJ): $(HEADERS) redirector.cpp
+	$(CXX) -c $(CXXFLAGS) $(OPTIONS) -o redirector64$(DOTOBJ) redirector.cpp
+mzc2mini64$(DOTOBJ): $(HEADERS) mzc2mini.cpp
+	$(CXX) -c $(CXXFLAGS) $(OPTIONS) -o mzc2mini64$(DOTOBJ) mzc2mini.cpp
+
+clean:
+	rm -f *$(DOTOBJ)
